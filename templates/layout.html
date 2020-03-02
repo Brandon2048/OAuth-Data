@@ -8,19 +8,19 @@
 	  {% else %}
 	  <a href="/login">Login</a>
 	  {% endif %}
-      
+
 	{% if valid_user == True %}
 	  <br><p> god job</p>
 	  {% endif %}
-	  
-	{% if Admin == "Admin Privileges" %}  
+
+	{% if Admin == "Admin Privileges" %}
     <h2>{{Admin}}</h2>
-      
+
 	<p>
       Logged in = {{admin_secret_data}}<br>
       Failed to Login = {{admin_secret_data2}}
     </p>
 	  {% endif %}
-        
+
 	 </body>
 </html>

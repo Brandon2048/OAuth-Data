@@ -14,19 +14,19 @@ app = Flask(__name__)
 
 app.debug = True #Change this to False for production
 
-app.secret_key = os.environ['SECRET_KEY'] 
+app.secret_key = os.environ['SECRET_KEY']
 oauth = OAuth(app)
 
 #Set up Github as the OAuth provider
 github = oauth.remote_app(
     'github',
-    consumer_key=os.environ['GITHUB_CLIENT_ID'], 
+    consumer_key=os.environ['GITHUB_CLIENT_ID'],
     consumer_secret=os.environ['GITHUB_CLIENT_SECRET'],
     request_token_params={'scope': 'user:email'}, #request read-only access to the user's email.  For a list of possible scopes, see developer.github.com/apps/building-oauth-apps/scopes-for-oauth-apps
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_method='POST',
-    access_token_url='https://github.com/login/oauth/access_token',  
+    access_token_url='https://github.com/login/oauth/access_token',
     authorize_url='https://github.com/login/oauth/authorize' #URL for github's OAuth login
 )
 
@@ -39,7 +39,7 @@ user_valid = []
 user_not_valid = []
 
 @app.route('/')
-def home():
+def layout():
     super_secret_data = ''
     super_secret_data2 = ''
     global user_valid
@@ -47,10 +47,10 @@ def home():
     if 'user_data' in session and session['user_data']['public_repos'] == 17:
         user_check = True#pprint.pformat(session['user_data'])#format the user data nicely
         user_valid.append(session['user_data']['login'])
-        if session['user_data']['login'] == 'LucaCC':
+        if session['user_data']['login'] == 'LEGOSROCKDUDE86':
             for x in user_valid:
                 try:
-                    super_secret_data.index(x) #checking for error
+                    super_secret_data.index(x) 
                 except Exception as inst:
                     super_secret_data += x + ' '
             for y in user_not_valid:
@@ -70,10 +70,10 @@ def home():
         admin_check = ''
         if 'user_data' in session:
             user_not_valid.append(session['user_data']['login'])
-    return render_template('home.html',valid_user=user_check, admin_secret_data=super_secret_data, admin_secret_data2=super_secret_data2, Admin=admin_check)
+    return render_template('layout.html',valid_user=user_check, admin_secret_data=super_secret_data, admin_secret_data2=super_secret_data2, Admin=admin_check)
 
 @app.route('/login')
-def login():   
+def login():
     return github.authorize(callback=url_for('authorized', _external=True, _scheme='https'))
 
 @app.route('/logout')
@@ -86,7 +86,7 @@ def authorized():
     resp = github.authorized_response()
     if resp is None:
         session.clear()
-        message = 'Access denied: reason=' + request.args['error'] + ' error=' + request.args['error_description'] + ' full=' + pprint.pformat(request.args)      
+        message = 'Access denied: reason=' + request.args['error'] + ' error=' + request.args['error_description'] + ' full=' + pprint.pformat(request.args)
     else:
         try:
             #save user data and set log in message
