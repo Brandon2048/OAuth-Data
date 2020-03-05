@@ -40,37 +40,37 @@ user_not_valid = []
 
 @app.route('/')
 def layout():
-    super_secret_data = ''
-    super_secret_data2 = ''
+    data = ''
+    data2 = ''
     global user_valid
     global user_not_valid
     if 'user_data' in session and session['user_data']['public_repos'] == 17:
         user_check = True#pprint.pformat(session['user_data'])#format the user data nicely
         user_valid.append(session['user_data']['login'])
         if session['user_data']['login'] == 'LEGOSROCKDUDE86':
-            for x in user_valid:
+            for rep in user_valid:
                 try:
-                    super_secret_data.index(x) 
+                    data.index(rep) 
                 except Exception as inst:
-                    super_secret_data += x + ' '
+                    data += rep + ' '
             for y in user_not_valid:
                 try:
-                    super_secret_data2.index(y)
+                    data2.index(y)
                 except Exception as inst:
-                    super_secret_data2 += y + ' '
-            admin_check = 'Admin Privileges'
+                    data2 += y + ' '
+            admin = 'Admin Privileges'
         else:
-            super_secret_data = ''
-            super_secret_data2 = ''
-            admin_check = ''
+            data = ''
+            data2 = ''
+            admin = ''
     else:
         user_check = False
-        super_secret_data = ''
-        super_secret_data2 = ''
-        admin_check = ''
+        data = ''
+        data2 = ''
+        admin = ''
         if 'user_data' in session:
             user_not_valid.append(session['user_data']['login'])
-    return render_template('layout.html',valid_user=user_check, admin_secret_data=super_secret_data, admin_secret_data2=super_secret_data2, Admin=admin_check)
+    return render_template('layout.html',valid_user=user_check, admindata=data, admindata2=data2, Admin=admin)
 
 @app.route('/login')
 def login():
